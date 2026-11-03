@@ -22,12 +22,6 @@ export const WEDDING = {
   venueName: 'Avinka Grand Luxury Banquet',
   mapEmbedQuery: 'Avinka Grand Luxury Banquet, Sri Lanka',
   mapLink: 'https://maps.app.goo.gl/JQKNSZMWoKFrtoZa6',
-
-  timeline: [
-    { time: '10:00 AM', title: 'Poruwa Ceremony', desc: 'The traditional and sacred Poruwa ceremony' },
-    { time: '12:30 PM', title: 'Buffet Opens', desc: 'A grand celebratory feast with our loved ones' },
-    { time: '04:00 PM', title: 'Farewell', desc: 'The celebration comes to a close as we begin our journey together' },
-  ],
 } as const;
 
 export const COUPLE_NAMES = `${WEDDING.groomName} & ${WEDDING.brideName}`;

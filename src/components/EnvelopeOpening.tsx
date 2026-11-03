@@ -63,7 +63,6 @@ export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () =
           position: absolute;
           border-radius: 50%;
           pointer-events: none;
-          filter: blur(80px);
         }
         .scene::before {
           width: 400px;

@@ -6,8 +6,6 @@ import { WEDDING } from '../config';
 export const CoupleDetails: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-      {/* Decorative ambient background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-radial from-brand-beige/15 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
       <div className="text-center mb-16 sm:mb-24 relative z-10">
         <motion.div
@@ -54,8 +52,6 @@ export const CoupleDetails: React.FC = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="relative px-4 sm:px-0 order-1 lg:order-2 flex-shrink-0 group"
         >
-          {/* Glowing border effect */}
-          <div className="absolute -inset-2 bg-gradient-to-b from-brand-beige-deep/30 to-transparent rounded-[12rem_12rem_1rem_1rem] blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
           <div className="relative w-[300px] h-[400px] sm:w-[360px] sm:h-[500px] lg:w-[420px] lg:h-[580px] rounded-[12rem_12rem_16px_16px] overflow-hidden border-[6px] border-white/90 shadow-[0_20px_50px_rgba(176,137,104,0.2)] bg-brand-champagne mx-auto z-10 transition-transform duration-700 group-hover:-translate-y-2">
             <img
@@ -66,11 +62,12 @@ export const CoupleDetails: React.FC = () => {
                 e.currentTarget.onerror = null;
               }}
               alt={`${WEDDING.groomName} and ${WEDDING.brideName}`}
-              className="w-full h-full object-cover mix-blend-multiply transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+              decoding="async"
+              className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
             />
             {/* Elegant inner shadow & overlay */}
             <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none" />
-            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-brand-beige-deep/30 to-transparent pointer-events-none mix-blend-overlay" />
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-brand-beige-deep/30 to-transparent pointer-events-none" />
           </div>
 
           {/* Floating Sparkles decoration */}

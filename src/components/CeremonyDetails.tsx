@@ -1,20 +1,18 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Clock, Calendar, MapPin, Heart, Sparkles } from 'lucide-react';
+import { Clock, Calendar, MapPin } from 'lucide-react';
 import { WEDDING } from '../config';
 
 export const CeremonyDetails: React.FC = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-      {/* Premium ambient backdrop */}
-      <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-gradient-radial from-brand-beige/10 to-transparent rounded-full blur-[120px] pointer-events-none" />
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 relative">
 
-      <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-        {/* Left Side: Text Content */}
-        <div className="lg:w-1/2 relative z-10 w-full">
+      <div className="flex justify-center">
+        {/* Ceremony details */}
+        <div className="relative z-10 w-full max-w-xl">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           >
@@ -68,35 +66,6 @@ export const CeremonyDetails: React.FC = () => {
                   <h4 className="font-serif text-2xl sm:text-3xl text-stone-800 mb-2 group-hover:text-brand-beige-deep transition-colors duration-500">{WEDDING.venueName}</h4>
                   <p className="text-stone-500/80 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">{WEDDING.venueHall}</p>
                 </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right Side: Visual Composition */}
-        <div className="lg:w-1/2 w-full relative mt-16 lg:mt-0">
-          {/* Reception Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
-            className="bg-white/85 backdrop-blur-xl p-6 sm:p-10 shadow-[0_30px_60px_rgba(176,137,104,0.15)] rounded-2xl border border-white relative overflow-hidden"
-          >
-            <div className="absolute inset-x-8 -top-px h-[2px] bg-gradient-to-r from-transparent via-brand-beige-deep/60 to-transparent" />
-            <div className="relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
-              <div className="flex items-center gap-3">
-                <Heart className="text-brand-beige-deep w-8 h-8 sm:w-10 sm:h-10 fill-brand-beige/20 drop-shadow-sm flex-shrink-0" />
-                <Sparkles className="w-4 h-4 text-brand-gold animate-pulse flex-shrink-0" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-display text-2xl sm:text-4xl text-stone-800 mb-1 sm:mb-2 tracking-tight">The Celebration</h4>
-                <p className="text-stone-500/90 font-serif text-sm sm:text-base leading-relaxed">
-                  Followed by a grand celebratory buffet and festivities at {WEDDING.venueName}.
-                </p>
-              </div>
-              <div className="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-brand-champagne rounded-full border border-brand-beige/30 shadow-sm self-start sm:self-center flex-shrink-0">
-                <span className="text-brand-beige-deep font-sans font-bold tracking-[0.1em] sm:tracking-[0.2em] text-[9px] sm:text-[11px] uppercase block drop-shadow-sm">Buffet 12:30 PM</span>
               </div>
             </div>
           </motion.div>

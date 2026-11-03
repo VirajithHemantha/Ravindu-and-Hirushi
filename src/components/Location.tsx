@@ -9,8 +9,6 @@ export const Location: React.FC = () => {
 
   return (
     <div className="max-w-[85rem] mx-auto px-6 relative py-12">
-      {/* Decorative Glows */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial from-brand-beige/20 to-transparent blur-3xl pointer-events-none -z-10" />
 
       <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-0 mt-10">
         
@@ -22,7 +20,7 @@ export const Location: React.FC = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="w-full lg:w-[45%] z-20"
         >
-          <div className="bg-white/90 backdrop-blur-2xl p-10 sm:p-14 lg:p-16 rounded-[2.5rem] shadow-[0_30px_60px_rgba(176,137,104,0.15)] border border-brand-beige/30 lg:translate-x-12 relative overflow-hidden group">
+          <div className="bg-white/90 p-10 sm:p-14 lg:p-16 rounded-[2.5rem] shadow-[0_30px_60px_rgba(176,137,104,0.15)] border border-brand-beige/30 lg:translate-x-12 relative overflow-hidden group">
             
             {/* Elegant top border gradient */}
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-champagne via-brand-beige to-brand-beige-deep" />
@@ -82,7 +80,6 @@ export const Location: React.FC = () => {
           
           <div className="w-full h-full rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[8px] sm:border-[12px] border-white relative group/map">
             {/* Map Placeholder Masking for premium feel */}
-            <div className="absolute inset-0 bg-brand-beige/10 mix-blend-multiply pointer-events-none z-20 group-hover/map:opacity-0 transition-opacity duration-1000" />
             
             <iframe
               title={`${WEDDING.venueName} Location`}
@@ -97,7 +94,7 @@ export const Location: React.FC = () => {
             />
 
             {/* Decorative Location Pin Overlay */}
-            <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-brand-beige/30 shadow-lg flex items-center gap-2 pointer-events-none z-30">
+            <div className="absolute top-6 right-6 bg-white/90 px-4 py-2 rounded-full border border-brand-beige/30 shadow-lg flex items-center gap-2 pointer-events-none z-30">
               <Map className="w-4 h-4 text-brand-beige-deep animate-pulse" />
               <span className="text-[9px] uppercase tracking-widest font-bold text-stone-600">Live Map</span>
             </div>

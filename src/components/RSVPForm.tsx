@@ -37,15 +37,13 @@ export const RSVPForm: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-6 relative py-10">
-      {/* Premium ambient backdrop & glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-radial from-brand-beige/15 to-transparent rounded-full blur-[100px] pointer-events-none -z-10" />
 
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="glass p-10 sm:p-14 lg:p-16 rounded-[3rem] border border-white/40 shadow-[0_30px_60px_rgba(176,137,104,0.1)] relative overflow-hidden bg-white/60 backdrop-blur-3xl lg:flex items-center gap-16"
+        className="p-10 sm:p-14 lg:p-16 rounded-[3rem] border border-white/40 shadow-[0_30px_60px_rgba(176,137,104,0.1)] relative overflow-hidden bg-white/60 lg:flex items-center gap-16"
       >
         {/* Soft top border line */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brand-champagne via-brand-beige-deep/80 to-brand-champagne" />

@@ -71,3 +71,25 @@ html, body {
 .text-stone-400 {
   color: #097969 !important; /* Emerald */
 }
+/* Falling petals (compositor-only animation) */
+.petal {
+  position: absolute;
+  top: -5%;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: petal-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes petal-fall {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.55; }
+  85%  { opacity: 0.55; }
+  100% { transform: translate3d(var(--drift, 20px), 110vh, 0) rotate(540deg); opacity: 0; }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .petal { display: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
