@@ -33,10 +33,8 @@ export const WEDDING = {
 export const COUPLE_NAMES = `${WEDDING.groomName} & ${WEDDING.brideName}`;
 
 // Google Apps Script Web App URL (Deploy > Web app > copy URL ending in /exec).
-// Can also be set via .env: VITE_GOOGLE_APPS_SCRIPT_URL=...
-export const GOOGLE_SCRIPT_URL: string =
-  (import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL as string | undefined) ||
-  'PASTE_YOUR_WEB_APP_URL_HERE';
+export const GOOGLE_SCRIPT_URL =
+  'https://script.google.com/macros/s/AKfycbzHdufO_g6aFr3KK-CSBZwSmHCjGOc89sR_oiFrjYJ5alXnfIVJltx9-IgjXWNPDp8/exec';
 
 export const isScriptConfigured = () => GOOGLE_SCRIPT_URL.startsWith('https://script.google.com/');
 
