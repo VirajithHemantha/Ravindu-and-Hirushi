@@ -1,60 +1,32 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Send, Loader2, Sparkles } from 'lucide-react';
+import { Send, Loader2, Sparkles, Heart } from 'lucide-react';
+import { toast } from 'sonner';
+import { submitToSheet } from '../config';
+import { getGuestNameFromUrl } from '../guest';
 
-interface Wish {
-  id: string;
-  name: string;
-  message: string;
-  createdAt: Date;
-}
-
-const getRelativeTime = (date: Date) => {
-  const diff = Date.now() - date.getTime();
-  const minutes = Math.floor(diff / 60000);
-  if (minutes < 1) return 'just now';
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.floor(hours / 24)}d ago`;
-};
-
+// Wishes are sent privately to the couple's Google Sheet — they are NOT displayed on the invitation.
 export const WishesSection: React.FC = () => {
-  const [wishes, setWishes] = useState<Wish[]>([]);
   const [formData, setFormData] = useState({ name: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.message) return;
+    if (!formData.name.trim() || !formData.message.trim()) return;
     setIsSubmitting(true);
 
     try {
-      // Send data to Google Sheets
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbyay20jbF63BRUj8JGGbUbYkYS3Us-DpLZc2Hs34si_qKJgxs_81xpNBniXsBNFsYOt7g/exec';
-      const payload = new FormData();
-      payload.append('sheet', 'Wishes');
-      payload.append('name', formData.name);
-      payload.append('message', formData.message);
-
-      await fetch(scriptUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: payload,
+      await submitToSheet('Wishes', {
+        name: formData.name.trim(),
+        message: formData.message.trim(),
+        invitedAs: getGuestNameFromUrl() ?? '',
       });
-
-      const newWish: Wish = {
-        id: Date.now().toString(),
-        name: formData.name,
-        message: formData.message,
-        createdAt: new Date(),
-      };
-      
-      // Prepend the new wish to the list
-      setWishes(prev => [newWish, ...prev]);
       setFormData({ name: '', message: '' });
+      setSent(true);
     } catch (error) {
       console.error('Error submitting wish: ', error);
+      toast.error('Sorry, we could not send your wish. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -76,96 +48,96 @@ export const WishesSection: React.FC = () => {
         <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-brand-beige/60 to-transparent mx-auto mt-8" />
       </div>
 
-      <div className="flex flex-col items-center">
-        
-        {/* Beautiful Centered Form Box */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-          className="w-full glass p-8 sm:p-14 rounded-[3rem] border border-white/60 shadow-[0_30px_60px_rgba(176,137,104,0.1)] relative overflow-hidden bg-white/70 backdrop-blur-3xl mb-16"
-        >
-          {/* Subtle top reflection line */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-beige to-transparent opacity-50" />
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+        className="w-full glass p-8 sm:p-14 rounded-[3rem] border border-white/60 shadow-[0_30px_60px_rgba(176,137,104,0.1)] relative overflow-hidden bg-white/70 backdrop-blur-3xl"
+      >
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-beige to-transparent opacity-50" />
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="text-center mb-10">
-              <p className="text-stone-500 font-serif italic text-lg leading-relaxed max-w-lg mx-auto">
-                Leave a little note or a piece of advice for our journey ahead.
+        <AnimatePresence mode="wait">
+          {sent ? (
+            <motion.div
+              key="thanks"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="text-center py-10"
+            >
+              <Heart className="w-14 h-14 mx-auto mb-6 text-brand-beige-deep fill-brand-beige/20" />
+              <h3 className="text-4xl font-display text-stone-800 mb-4">Thank You</h3>
+              <p className="text-stone-500/90 font-serif italic text-lg leading-relaxed max-w-md mx-auto mb-8">
+                Your heartfelt wish has been sent to us. We will treasure it forever.
               </p>
-            </div>
-
-            <div className="space-y-6">
-              <div>
-                <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500 mb-3 ml-2 text-left">Your Name</label>
-                <input
-                  required
-                  type="text"
-                  placeholder="E.g., Uncle John"
-                  className="w-full bg-white/80 px-6 py-4 rounded-full border border-stone-200/60 focus:ring-2 focus:ring-brand-beige/30 focus:border-brand-beige-deep/40 outline-none transition-all duration-300 font-serif italic text-lg shadow-inner placeholder:text-stone-300 text-stone-700"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500 mb-3 ml-2 text-left">Your Message</label>
-                <textarea
-                  required
-                  placeholder="Wishing you a lifetime of happiness..."
-                  className="w-full bg-white/80 px-6 py-5 rounded-[2rem] border border-stone-200/60 focus:ring-2 focus:ring-brand-beige/30 focus:border-brand-beige-deep/40 outline-none transition-all duration-300 h-36 resize-none font-serif italic text-lg shadow-inner placeholder:text-stone-300 text-stone-700"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="pt-4 max-w-sm mx-auto">
               <button
-                disabled={isSubmitting}
-                type="submit"
-                className="w-full bg-stone-800 text-brand-champagne py-5 rounded-full font-sans tracking-[0.3em] font-bold text-[11px] uppercase hover:bg-stone-900 transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.25)] active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-70"
+                onClick={() => setSent(false)}
+                className="px-6 py-2 rounded-full border border-brand-beige/30 text-brand-beige-deep font-sans text-[10px] tracking-[0.2em] uppercase hover:bg-brand-beige/10 transition-all duration-300 shadow-sm"
               >
-                {isSubmitting ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <>
-                    <Send className="w-4 h-4 text-brand-gold" />
-                    Share Blessing
-                  </>
-                )}
+                Send Another Wish
               </button>
-            </div>
-          </form>
-        </motion.div>
-
-        {/* Wishes List - Stacked Centrally Below */}
-        <div className="w-full space-y-6 max-h-[800px] overflow-y-auto pr-4 scrollbar-thin">
-          <AnimatePresence initial={false}>
-            {wishes.map((wish) => (
-              <motion.div
-                key={wish.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="glass p-8 sm:p-10 rounded-3xl border border-brand-beige/20 shadow-sm relative overflow-hidden group bg-white/50 backdrop-blur-sm"
-              >
-                <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-brand-beige-deep/20 to-brand-beige/40 group-hover:from-brand-beige-deep group-hover:to-brand-beige transition-all duration-500" />
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4 mb-4">
-                  <h4 className="font-display text-2xl text-stone-800 tracking-tight pl-2">{wish.name}</h4>
-                  <span className="text-[9px] uppercase tracking-[0.2em] text-stone-400 font-bold bg-white/60 px-3 py-1 rounded-full border border-stone-100/50">
-                    {wish.createdAt ? getRelativeTime(wish.createdAt) : 'just now'}
-                  </span>
-                </div>
-                <p className="text-stone-600 font-serif italic text-lg sm:text-lg leading-relaxed pl-2">
-                  "{wish.message}"
+            </motion.div>
+          ) : (
+            <motion.form
+              key="form"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onSubmit={handleSubmit}
+              className="space-y-8"
+            >
+              <div className="text-center mb-10">
+                <p className="text-stone-500 font-serif italic text-lg leading-relaxed max-w-lg mx-auto">
+                  Leave a little note or a piece of advice for our journey ahead.
                 </p>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-      </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500 mb-3 ml-2 text-left">Your Name</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="E.g., Uncle John"
+                    className="w-full bg-white/80 px-6 py-4 rounded-full border border-stone-200/60 focus:ring-2 focus:ring-brand-beige/30 focus:border-brand-beige-deep/40 outline-none transition-all duration-300 font-serif italic text-lg shadow-inner placeholder:text-stone-300 text-stone-700"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500 mb-3 ml-2 text-left">Your Message</label>
+                  <textarea
+                    required
+                    placeholder="Wishing you a lifetime of happiness..."
+                    className="w-full bg-white/80 px-6 py-5 rounded-[2rem] border border-stone-200/60 focus:ring-2 focus:ring-brand-beige/30 focus:border-brand-beige-deep/40 outline-none transition-all duration-300 h-36 resize-none font-serif italic text-lg shadow-inner placeholder:text-stone-300 text-stone-700"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4 max-w-sm mx-auto">
+                <button
+                  disabled={isSubmitting}
+                  type="submit"
+                  className="w-full bg-stone-800 text-brand-champagne py-5 rounded-full font-sans tracking-[0.3em] font-bold text-[11px] uppercase hover:bg-stone-900 transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.25)] active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-70"
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 text-brand-gold" />
+                      Share Blessing
+                    </>
+                  )}
+                </button>
+              </div>
+            </motion.form>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

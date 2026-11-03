@@ -4,15 +4,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Isuri & Duvindu's Wedding Invitation</title>
+  <title>Ravindu & Hirushi's Wedding Invitation</title>
+  <meta name="description" content="Ravindu & Hirushi — Thursday, 17 December 2026 · Avinka Grand Luxury Banquet" />
+  <meta property="og:title" content="Ravindu & Hirushi's Wedding Invitation" />
+  <meta property="og:description" content="Thursday, 17 December 2026 · Avinka Grand Luxury Banquet" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- All fonts in one early request (previously @import-ed inside CSS/components, which delayed the envelope) -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=Playball&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Inter:wght@100..900&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
     rel="stylesheet">
+  <!-- Envelope + first-screen images load in parallel with JS -->
+  <link rel="preload" as="image" href="/ivory_satin_bow-removebg-preview.png">
+  <link rel="preload" as="image" href="/y.jpeg">
 </head>
 
-<body>
+<body style="margin:0;background:#FAF9F6">
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

@@ -4,10 +4,10 @@ import App from './App.tsx';
 import { AdminPage } from './AdminPage.tsx';
 import './index.css';
 
-const path = window.location.pathname;
+const isAdmin = window.location.pathname.replace(/\/+$/, '').toLowerCase() === '/admin';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {path === '/admin' ? <AdminPage /> : <App />}
+    {isAdmin ? <AdminPage /> : <App />}
   </StrictMode>,
 );

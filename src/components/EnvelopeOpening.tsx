@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from "react";
+import { WEDDING } from "../config";
+import { getGuestNameFromUrl } from "../guest";
+
+// Matches the .flap-left transition (1.5s) so the invitation appears right as the flap finishes.
+const OPEN_DURATION_MS = 1600;
 
 export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () => void, onMusicStart?: () => void }) {
   const [opened, setOpened] = useState(false);
   
-  const params = new URLSearchParams(window.location.search);
-  const prefix = params.get('prefix');
-  const guestName = params.get('name');
+  const guestName = getGuestNameFromUrl();
+
+  // Warm the browser cache for the invitation's images while the guest looks at the envelope
+  useEffect(() => {
+    ['/y.jpeg', '/x.jpeg'].forEach((src) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = src;
+    });
+  }, []);
 
   useEffect(() => {
     if (opened) {
       if (onMusicStart) onMusicStart();
       const timer = setTimeout(() => {
         onComplete();
-      }, 5000);
+      }, OPEN_DURATION_MS);
       return () => clearTimeout(timer);
     }
   }, [opened, onComplete, onMusicStart]);
@@ -20,8 +32,6 @@ export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () =
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap');
-
         * {
           box-sizing: border-box;
         }
@@ -412,7 +422,7 @@ export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () =
               </svg>
 
               <div className="text-eyebrow">
-                {guestName ? `Dear ${prefix} ${guestName},` : 'Promise of Love'}
+                {guestName ? `Dear ${guestName},` : 'Promise of Love'}
               </div>
 
               <div className="divider">
@@ -422,9 +432,9 @@ export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () =
               </div>
 
               <h1 className="text-names">
-                Isuri
+                {WEDDING.groomName}
                 <span className="text-ampersand">&</span>
-                &nbsp;Duvindu
+                {WEDDING.brideName}
               </h1>
 
               <div className="divider">
@@ -435,9 +445,8 @@ export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () =
 
               <div className="text-details">
                 Request the honour of your presence<br />
-                <span className="text-date">Tuesday 05 January 2027 At 09:00 AM</span>
-                <span className="text-church">Hilton Colombo</span><br />
-                Colombo
+                <span className="text-date">{WEDDING.dayName} 17 December 2026 At {WEDDING.startTime}</span>
+                <span className="text-church">{WEDDING.venueHall}, {WEDDING.venueName}</span>
               </div>
             </div>
           </div>

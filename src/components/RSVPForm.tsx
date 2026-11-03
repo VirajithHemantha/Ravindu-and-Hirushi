@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle, Loader2, Heart, Sparkles } from 'lucide-react';
+import { toast } from 'sonner';
+import { submitToSheet } from '../config';
+import { getGuestNameFromUrl } from '../guest';
 
 export const RSVPForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,24 +18,19 @@ export const RSVPForm: React.FC = () => {
     setStatus('loading');
 
     try {
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbyay20jbF63BRUj8JGGbUbYkYS3Us-DpLZc2Hs34si_qKJgxs_81xpNBniXsBNFsYOt7g/exec';
-      const payload = new FormData();
-      payload.append('sheet', 'RSVP');
-      payload.append('name', formData.fullName);
-      payload.append('guests', formData.guests);
-      payload.append('dietary', formData.dietaryNotes);
-      payload.append('attendance', 'Yes');
-
-      await fetch(scriptUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: payload,
+      await submitToSheet('RSVP', {
+        name: formData.fullName.trim(),
+        guests: formData.guests,
+        dietary: formData.dietaryNotes.trim(),
+        attendance: 'Yes',
+        invitedAs: getGuestNameFromUrl() ?? '',
       });
 
       setStatus('success');
       setFormData({ fullName: '', guests: '1', dietaryNotes: '' });
     } catch (error) {
       console.error('Error sending RSVP: ', error);
+      toast.error('Sorry, we could not send your RSVP. Please try again.');
       setStatus('error');
     }
   };
